@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <title>Mini Tranzacționator - Cartoon Edition</title>
+  <style>
+    body {
+      background-color: #fff0f5;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      text-align: center;
+      padding: 20px;
+      color: #333;
+    }
+
+    h1 {
+      font-size: 3em;
+      color: #ff1493;
+      text-shadow: 2px 2px #ff69b4;
+    }
+
+    .info {
+      margin: 20px;
+      font-size: 1.5em;
+    }
+
+    button {
+      background-color: #ffcc00;
+      border: 3px solid #ff9900;
+      border-radius: 12px;
+      padding: 10px 20px;
+      font-size: 1.2em;
+      margin: 10px;
+      cursor: pointer;
+      box-shadow: 3px 3px #d48d00;
+      transition: transform 0.2s;
+    }
+
+    button:hover {
+      transform: scale(1.1);
+    }
+
+    .market {
+      font-size: 2em;
+      margin-top: 20px;
+    }
+
+    .emoji {
+      font-size: 3em;
+    }
+
+    .footer {
+      margin-top: 40px;
+      font-size: 1em;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+  <h1>💰 Mini Tranzacționator & GhinescuTRADE 💰</h1>
+
+  <div class="info">
+    💼 Balanță: <span id="balance">1000</span> RON<br>
+    📦 Acțiuni deținute: <span id="stocks">0</span><br>
+    📉 Prețul unei acțiuni: <span id="price">100</span> RON
+  </div>
+
+  <button onclick="buyStock()">🛒 CUMPĂRĂ</button>
+  <button onclick="sellStock()">💸 VINDE</button>
+
+  <div class="market">
+    📈 Piața se mișcă: <span class="emoji" id="marketEmoji">🔄</span>
+  </div>
+
+  <div class="footer">
+    Fă-ți strategia și învață cum funcționează piața! 🎓
+  </div>
+
+  <script>
+    let balance = 1000;
+    let stocks = 0;
+    let price = 100;
+
+    function updateUI() {
+      document.getElementById('balance').textContent = balance.toFixed(2);
+      document.getElementById('stocks').textContent = stocks;
+      document.getElementById('price').textContent = price.toFixed(2);
+
+      // Emoji pentru direcția pieței
+      const emoji = priceChange > 0 ? "📈" : priceChange < 0 ? "📉" : "🔄";
+      document.getElementById('marketEmoji').textContent = emoji;
+    }
+
+    function buyStock() {
+      if (balance >= price) {
+        balance -= price;
+        stocks += 1;
+        changePrice();
+        updateUI();
+      } else {
+        alert("Nu ai destui bani pentru a cumpăra!");
+      }
+    }
+
+    function sellStock() {
+      if (stocks > 0) {
+        balance += price;
+        stocks -= 1;
+        changePrice();
+        updateUI();
+      } else {
+        alert("Nu ai acțiuni de vândut!");
+      }
+    }
+
+    let priceChange = 0;
+    function changePrice() {
+      priceChange = (Math.random() * 20 - 10); // variație între -10 și +10
+      price += priceChange;
+      if (price < 10) price = 10; // preț minim
+    }
+
+    // Actualizare automată a prețului
+    setInterval(() => {
+      changePrice();
+      updateUI();
+    }, 5000); // la fiecare 5 secunde
+
+    updateUI();
+  </script>
+</body>
+</html>
