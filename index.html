@@ -2,14 +2,55 @@
 <html lang="ro">
 <head>
   <meta charset="UTF-8">
-  <title>Mini Tranzacționator - Cartoon Edition</title>
+  <title>GhinescuTrade</title>
   <style>
     body {
-      background-color: #fff0f5;
+      margin: 0;
       font-family: 'Comic Sans MS', cursive, sans-serif;
+      background-color: #fff0f5;
       text-align: center;
-      padding: 20px;
       color: #333;
+    }
+
+    /* Ecranul de intro */
+    #introScreen {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: #fff0f5;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+  #introScreen img {
+  width: 200px;
+  height: auto;
+  margin-top: 100px;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.2);
+}
+    #introScreen h2 {
+      margin-top: 20px;
+      color: #ff1493;
+      font-size: 2em;
+      animation: fadeInOut 5s ease-in-out forwards;
+    }
+
+    @keyframes fadeInOut {
+      0% { opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+
+    /* Aplicația principală */
+    #app {
+      display: none;
+      padding: 20px;
     }
 
     h1 {
@@ -56,36 +97,52 @@
   </style>
 </head>
 <body>
-  <h1>💰 Mini Tranzacționator & GhinescuTRADE 💰</h1>
 
-  <div class="info">
-    💼 Balanță: <span id="balance">1000</span> RON<br>
-    📦 Acțiuni deținute: <span id="stocks">0</span><br>
-    📉 Prețul unei acțiuni: <span id="price">100</span> RON
+  <!-- Ecran de intro -->
+  <div id="introScreen">
+    <img src="intro.png" alt="Copil cu aplicație de tranzacționare">
+    <h2>Bine ai venit pe GhinescuTrade!</h2>
   </div>
 
-  <button onclick="buyStock()">🛒 CUMPĂRĂ</button>
-  <button onclick="sellStock()">💸 VINDE</button>
+  <!-- Aplicația -->
+  <div id="app">
+    <h1>💰 Mini Tranzacționator 💰</h1>
 
-  <div class="market">
-    📈 Piața se mișcă: <span class="emoji" id="marketEmoji">🔄</span>
-  </div>
+    <div class="info">
+      💼 Balanță: <span id="balance">1000</span> RON<br>
+      📦 Acțiuni deținute: <span id="stocks">0</span><br>
+      📉 Prețul unei acțiuni: <span id="price">100</span> RON
+    </div>
 
-  <div class="footer">
-    Fă-ți strategia și învață cum funcționează piața! 🎓
+    <button onclick="buyStock()">🛒 CUMPĂRĂ</button>
+    <button onclick="sellStock()">💸 VINDE</button>
+
+    <div class="market">
+      📈 Piața se mișcă: <span class="emoji" id="marketEmoji">🔄</span>
+    </div>
+
+    <div class="footer">
+      Fă-ți strategia și învață cum funcționează piața! 🎓
+    </div>
   </div>
 
   <script>
+    // Afișează aplicația după 5 secunde
+    setTimeout(() => {
+      document.getElementById("introScreen").style.display = "none";
+      document.getElementById("app").style.display = "block";
+    }, 5000);
+
+    // Logica aplicației
     let balance = 1000;
     let stocks = 0;
     let price = 100;
+    let priceChange = 0;
 
     function updateUI() {
       document.getElementById('balance').textContent = balance.toFixed(2);
       document.getElementById('stocks').textContent = stocks;
       document.getElementById('price').textContent = price.toFixed(2);
-
-      // Emoji pentru direcția pieței
       const emoji = priceChange > 0 ? "📈" : priceChange < 0 ? "📉" : "🔄";
       document.getElementById('marketEmoji').textContent = emoji;
     }
@@ -112,18 +169,16 @@
       }
     }
 
-    let priceChange = 0;
     function changePrice() {
-      priceChange = (Math.random() * 20 - 10); // variație între -10 și +10
+      priceChange = (Math.random() * 20 - 10);
       price += priceChange;
-      if (price < 10) price = 10; // preț minim
+      if (price < 10) price = 10;
     }
 
-    // Actualizare automată a prețului
     setInterval(() => {
       changePrice();
       updateUI();
-    }, 5000); // la fiecare 5 secunde
+    }, 5000);
 
     updateUI();
   </script>
